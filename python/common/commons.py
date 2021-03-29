@@ -82,7 +82,7 @@ def setEnv(args):
     #         cfg = yaml.load(ymlfile)
 
     with open(args.prop, 'r') as ymlfile:
-        cfg = yaml.load(ymlfile)
+        cfg = yaml.load(ymlfile, Loader=yaml.FullLoader)
     # for section in cfg:
     #     print(section)
     # print(cfg['mysql'])
