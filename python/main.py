@@ -79,7 +79,6 @@ if __name__ == '__main__':
         elif job =='inferrer':
             from sprinferIndex import runSpinfer
             runSpinfer()
-
             from sprinferIndex import divideCoccis
             divideCoccis()
             from sprinferIndex import removeDuplicates
@@ -87,6 +86,10 @@ if __name__ == '__main__':
 
         elif job == 'validateCodeFlaws':
             from validateCodeFlaws import validate
+            validate()
+
+        elif job == 'validateSignatures':
+            from validateSignature import validate
             validate()
 
         elif job =='patchIntro':

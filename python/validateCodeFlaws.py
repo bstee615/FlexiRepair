@@ -98,6 +98,7 @@ def validateCore(t):
     spfiles = load_zipped_pickle(join(DATA_PATH, 'uPatterns.pickle'))
 
     spfiles['uProjects'] = spfiles.uFiles.apply(lambda x: list(set([i.split('/{')[0].replace('(','') for i in x])))
+    # Get all patterns which were not inferred from codeflaws
     spfiles = spfiles[~spfiles.uProjects.apply(lambda x: np.all([i == 'codeflaws' for i in x]))]
 
     spfiles.sort_values(by=prioritize,inplace=True,ascending=False)
@@ -150,8 +151,10 @@ def validateCore(t):
 
 def validate():
 
-     bugs2test= listdir(CODEFLAWS_PATH)
+     bugs2test = [b for b in listdir(CODEFLAWS_PATH) if not(b == '.DS_Store' or b == 'README.md' or b.endswith('.txt') or b.endswith('.tar.gz'))]
      bugs2test.sort()
+     if validList != ['ALL']:
+         bugs2test = [b for b in bugs2test if b in validList]
 
 
      isHeldout = True
@@ -177,20 +180,9 @@ def validate():
         return
 
      bugList = []
-     if(validList == ['ALL']):
-         for b in bugs2test:
-             if b == '.DS_Store' or b == 'README.md' or b.endswith('.txt') or b.endswith('.tar.gz'):
-                 continue
-             t = b,isHeldout,prioritize
-             bugList.append(t)
-     else:
-         for b in bugs2test:
-             if b == '.DS_Store' or b == 'README.md' or b.endswith('.txt') or b.endswith('.tar.gz'):
-                 continue
-             if b not in validList:
-                 continue
-             t = b,isHeldout,prioritize
-             bugList.append(t)
+     for b in bugs2test:
+        t = b,isHeldout,prioritize
+        bugList.append(t)
 
      # results = parallelRunMerge(testCore, bugList,max_workers=10)
      results = parallelRunMerge(validateCore, bugList)

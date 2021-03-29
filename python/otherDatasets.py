@@ -289,15 +289,19 @@ def core():
     for repo,src in datasets.values.tolist():
         if(pjList != ['ALL']):
             if repo in pjList:
-                 print(repo)
-                 cmd = 'git config --global http.postBuffer 157286400'
-                 shellCallTemplate(cmd)
-                 cmd = 'git config --global diff.renamelimit 0'
-                 shellCallTemplate(cmd)
-                 cmd = 'git -C ' + DATASET_PATH + ' clone ' + src
-                 shellCallTemplate(cmd)
-                 logging.info(repo)
-                 collectBugFixPatches(repo)
+                 dest_dir = os.path.join(DATASET_PATH, src.split('/')[-1].split('.')[0])
+                 print(repo, dest_dir)
+                 if os.path.exists(dest_dir):
+                    print(dest_dir, 'already exists')
+                 else:
+                    cmd = 'git config --global http.postBuffer 157286400'
+                    shellCallTemplate(cmd)
+                    cmd = 'git config --global diff.renamelimit 0'
+                    shellCallTemplate(cmd)
+                    cmd = 'git -C ' + DATASET_PATH + ' clone ' + src
+                    shellCallTemplate(cmd)
+                    logging.info(repo)
+                    collectBugFixPatches(repo)
         else:
             cmd = 'git -C ' + DATASET_PATH + ' clone ' + src
             shellCallTemplate(cmd)
