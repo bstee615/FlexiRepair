@@ -1,5 +1,5 @@
 java:
-    8home:  /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home
+    8home:  /usr/bin
 spinfer:
     home:   /data/spinfer/spinfer.native
 coccinelle:
@@ -9,6 +9,7 @@ dataset:
     inputPath : /data/flexi-data/patches
     repo:   /data/flexi-data/datasets
     codeflaws:   /data/codeflaws
+    signatures:   /data/flexi-data/sigs
 
 miner:
     projectType : c
@@ -31,9 +32,9 @@ miner:
     patchType : ALL     # the type of the patches from repositories. ALL considers all patches whereas BUG considers patches with commit logs containing "bug" or "fix" keywords
 
     validList : ALL     # the list of the bugs to be validated permitted values ALL, or comma seperated  bugname located in codeflaws  (e.g. 330-B-bug-16561986-16561997,325-A-bug-4061814-4061951)
-    validType : black   # validation testsuite. Permitted values are white or black
+    validType : white   # validation testsuite. Permitted values are white or black
     prioritizion : file # generic patch prioritizion. Permitted values are project,patch,file,function,hunk
 
 
-    projectList : git   # repositories to mine and infer generic patches. Permitted values ALL, or comma seperated repository name located in datasets.csv
+    projectList : ALL   # repositories to mine and infer generic patches. Permitted values ALL, or comma seperated repository name located in datasets.csv
 
