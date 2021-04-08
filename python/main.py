@@ -43,7 +43,8 @@ if __name__ == '__main__':
         # elif job =='richedit':
             print('Mining')
             dbDir = join(DATA_PATH, 'redis')
-            stopDB(dbDir, REDIS_PORT)
+            #stopDB(dbDir, REDIS_PORT)
+            #startDB(dbDir, REDIS_PORT, PROJECT_TYPE)
 
             cmd = 'bash ' + join(ROOT_DIR,'data' , 'runJava.sh') + ' {} {} {} '.format(join(Path(ROOT_DIR).parent, 'target','FlexiRepair-1.0.0-jar-with-dependencies.jar'),args.prop,"RICHEDITSCRIPT")
 
@@ -124,3 +125,4 @@ if __name__ == '__main__':
             logging.error('Unknown job %s',job)
     except Exception as e:
         logging.error(e)
+        raise

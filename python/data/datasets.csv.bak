@@ -19,6 +19,7 @@ gtk, https://gitlab.gnome.org/GNOME/gtk.git
 gstreamer, https://gitlab.freedesktop.org/gstreamer/gstreamer.git
 openssh-portable, https://github.com/openssh/openssh-portable.git
 wireshark, https://github.com/wireshark/wireshark.git
+linux, git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
 gmp,https://github.com/ryepdx/gmp
 lighttpd1.4,https://github.com/lighttpd/lighttpd1.4.git
 lighttpd2,https://github.com/lighttpd/lighttpd2.git

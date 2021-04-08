@@ -95,6 +95,7 @@ def setEnv(args):
     os.environ["dataset"] = cfg['dataset']['inputPath']
     os.environ["REPO_PATH"] = cfg['dataset']['repo']
     os.environ["CODEFLAWS_PATH"] = cfg['dataset']['codeflaws']
+    os.environ["SIGNATURES_PATH"] = cfg['dataset']['signatures']
     os.environ["DATA_PATH"] = cfg['miner']['datapath']
     os.environ["PROJECT_TYPE"] = cfg['miner']['projectType']
     os.environ["PROJECT_LIST"] = cfg['miner']['projectList']

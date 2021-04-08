@@ -303,10 +303,15 @@ def core():
                     logging.info(repo)
                     collectBugFixPatches(repo)
         else:
-            cmd = 'git -C ' + DATASET_PATH + ' clone ' + src
-            shellCallTemplate(cmd)
-            logging.info(repo)
-            collectBugFixPatches(repo)
+            dest_dir = os.path.join(DATASET_PATH, src.split('/')[-1].split('.')[0])
+            print(repo, dest_dir)
+            if os.path.exists(dest_dir):
+                 print(dest_dir, 'already exists')
+            else:
+                 cmd = 'git -C ' + DATASET_PATH + ' clone ' + src
+                 shellCallTemplate(cmd)
+                 logging.info(repo)
+                 collectBugFixPatches(repo)
 
 def codeflaws():
     cf = listdir(join(DATASET_PATH,'codeflaws'))

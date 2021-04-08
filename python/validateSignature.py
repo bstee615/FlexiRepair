@@ -14,7 +14,10 @@ def patchSourceFile(bugPath,spfile,bugName):
     srcPath = bugPath
     patchName = bugName
 
+    #print(srcPath, patchName)
+
     if(isfile(join(DATASET_PATH,bugName,'patched',patchName+spfile+'.c'))):
+        #print('already here')
         return join(DATASET_PATH,bugName,'patched',patchName+spfile+'.c')
 
     if not (isfile(join(DATASET_PATH,bugName,'patches',patchName+spfile+'.txt'))):
@@ -23,7 +26,9 @@ def patchSourceFile(bugPath,spfile,bugName):
                                                                                    'patches',
                                                                                    patchName + spfile + '.txt')
 
+        #print(cmd)
         output, e = shellGitCheckout(cmd)
+        #print(output)
     # logging.info(output)
     patchSize = os.path.getsize(join(DATASET_PATH,bugName,'patches',patchName+spfile+'.txt'))
     if patchSize == 0 :
@@ -36,6 +41,7 @@ def patchSourceFile(bugPath,spfile,bugName):
         return join(DATASET_PATH, bugName, 'patched', patchName + spfile + '.c')
 
 def validateCore(t):
+    print('validating', t)
     bugName,isHeldout,prioritize = t
 
     if not os.path.exists(join(DATASET_PATH, bugName, 'patches')):
@@ -56,6 +62,7 @@ def validateCore(t):
     # spfiles = spfiles[~spfiles.uProjects.apply(lambda x: np.all([i == 'codeflaws' for i in x]))]
     # TODO: Get only patterns which were not inferred from this signature's source project
     spfiles.sort_values(by=prioritize,inplace=True,ascending=False)
+    #print(len(spfiles), 'spfiles')
 
     cmd = 'make -C ' + join(DATASET_PATH, bugName) + ' clean'
     o, e = shellGitCheckout(cmd)
@@ -73,7 +80,7 @@ def validateCore(t):
             continue
 
         shutil.copy2(path, path+'.bak') # Backup main.c
-        dest = join(DATASET_PATH, bugName)
+        dest = join(DATASET_PATH, bugName, spfile + '.c')
         shutil.copy2(patch, dest) # Copy patched file
         shutil.copy2(dest, path) # Replace main.c with patched file
 
@@ -81,6 +88,7 @@ def validateCore(t):
         o, e = shellGitCheckout(cmd)
 
         if not e:
+            print('made', idx, spfile)
             # cmd = 'mv ' + join(DATASET_PATH,bugName,bugName+spfile) + ' ' + join(DATASET_PATH,bugName,contestid+'-'+problem+'-'+buggyId)
             # o, e = shellGitCheckout(cmd)
 
@@ -98,6 +106,8 @@ def validateCore(t):
             #     fix = 'success'
             #     output += 'fix {} by {} '.format(bugName, patch)
             #     break
+        else:
+            print(o, e)
 
     # output += 'times:{}, '.format(times) + fix
     # print(output)
@@ -105,19 +115,19 @@ def validateCore(t):
 
 
 def validate():
-
      bugs2test = listdir(DATASET_PATH)
      # Filter out irrelevant paths
      bugs2test = [b for b in bugs2test if not(b == '.DS_Store' or b == 'README.md' or b.endswith('.txt') or b.endswith('.tar.gz'))]
      bugs2test.sort()
+     validList = VALID_LIST.split(',')
      if validList != ['ALL']:
          bugs2test = [b for b in bugs2test if b in validList]
+     print(bugs2test)
 
 
      isHeldout = True
      if VALID_TYPE == 'black':
          isHeldout = False
-     validList = VALID_LIST.split(',')
 
 
 
@@ -140,6 +150,7 @@ def validate():
      for b in bugs2test:
         t = b,isHeldout,prioritize
         bugList.append(t)
+     print('all:', bugList)
 
      output = validateCore(bugList[0])  # TODO: This is just test
      print(output)

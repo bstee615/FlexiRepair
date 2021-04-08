@@ -27,6 +27,7 @@ def patchSourceFile(bugPath,spfile,bugName):
     # logging.info(output)
     patchSize = os.path.getsize(join(CODEFLAWS_PATH,bugName,'patches',patchName+spfile+'.txt'))
     if patchSize == 0 :
+        #print('patch is none')
         # os.remove(join(DATA_PATH,"introclass",bugName,'patches',patchName+spfile+'.txt'))
         return None
     else:
@@ -153,6 +154,7 @@ def validate():
 
      bugs2test = [b for b in listdir(CODEFLAWS_PATH) if not(b == '.DS_Store' or b == 'README.md' or b.endswith('.txt') or b.endswith('.tar.gz'))]
      bugs2test.sort()
+     validList = VALID_LIST.split(',')
      if validList != ['ALL']:
          bugs2test = [b for b in bugs2test if b in validList]
 
@@ -160,7 +162,6 @@ def validate():
      isHeldout = True
      if VALID_TYPE == 'black':
          isHeldout = False
-     validList = VALID_LIST.split(',')
 
 
 
